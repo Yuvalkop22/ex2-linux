@@ -15,7 +15,7 @@ void handler1(int sig){
 
 
  int main(int argc, char* argv[]){
-    signal(SIGUSR1, handler1);
+   // signal(SIGUSR1, handler1);
     FILE* fd;
     FILE* fd2;
     char buffer[256];
@@ -29,40 +29,32 @@ void handler1(int sig){
     int arr[4];
     int k = 0;
     int result;
-    fd = fopen("output.txt", "r"); // read mode
 
-   if (fd == NULL)
-   {
-      perror("Error while opening the file.\n");
-      exit(EXIT_FAILURE);
-   }
-
-   printf("The contents of %s file are:\n", "output.txt");
-
-   while((ch = fgetc(fd)) != EOF){
-      buffer[i] = ch;
-      i++;
-   }
-   for(int j = 0; j < i; j++){
-       printf("%c", buffer[j]);
-   }
-   fclose(fd);
-
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    fd = fopen("output.txt", "r"); //read the arguments sended by the client in "output.txt" file
+    if (fd == NULL)
+    {
+        perror("Error while opening the file.\n");
+        exit(EXIT_FAILURE);
+    }
+    while((ch = fgetc(fd)) != EOF){
+        buffer[i] = ch;
+        i++;
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////
     init_size = strlen(buffer);
-
 	ptr = strtok(buffer, delim);
-
 	while(ptr != NULL)
 	{
         arr[k] = atoi(ptr);
 		ptr = strtok(NULL, delim);
         k++;
 	}
-	printf("\n");
-    if(arr[2] == 1){
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    if(arr[2] == 1){ 
         result = arr[1] + arr[3];
     }
-    if(arr[2] == 2){
+    if(arr[2] == 2){ 
         result = arr[1] - arr[3];
     }
 
@@ -82,19 +74,14 @@ void handler1(int sig){
     if(arr[2] == 4){
         result = arr[1] * arr[3];
     }
-    printf("\n%d\n", result);
-    ////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////
     fd2= fopen("to_client.txt","w");
 	if( fd2<0 )
 	{ 
 		perror("cant open: com_file"); 
 		exit(0);
 	}
-	//sprintf(buffer,"%d",tmp);
-	//write(fd2,buffer,strlen(buffer));
     fprintf(fd2,"%d", result);
-
-	//kill(pid,SIGUSR1);
-	printf("\n\n");
+    /////////////////////////////////////////////////////////////////////////////////////////////
     return 0;
 }
