@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int result = 0;
 void handler1(int sig){
     FILE* fd;
     FILE* fd2;
@@ -21,9 +20,12 @@ void handler1(int sig){
     int arr[4];
     int k = 0;
     pid_t pid;
+    FILE* fp1;
+    int result;
+
+    printf("Hello from the server handler\n");
     signal(SIGUSR1, handler1);
     /////////////////////////////////////////////////////////////////////////////////////////////
-
     pid = fork();
     if (pid < 0){
         printf("Fork Error\n");
@@ -41,6 +43,7 @@ void handler1(int sig){
                 buffer[i] = ch;
                 i++;
             }
+            printf("file is ok!\n");
             /////////////////////////////////////////////////////////////////////////////////////////////
             init_size = strlen(buffer);
             ptr = strtok(buffer, delim);
@@ -51,6 +54,10 @@ void handler1(int sig){
                 k++;
             }
             /////////////////////////////////////////////////////////////////////////////////////////////
+            //arr[0] = client pid 
+            //arr[1] = num1
+            //arr[2] = func -> 1 | 2 | 3 | 4
+            //arr[3] = num2
             if(arr[2] == 1){ 
                 result = arr[1] + arr[3];
             }
@@ -67,15 +74,24 @@ void handler1(int sig){
                     }
                     fprintf(fd2,"%s", "Cannot divide by zero");
                     exit(-1);
-                }else{
+                }
+                else{
                     result = arr[1] / arr[3];
                 }
             }
             if(arr[2] == 4){
                 result = arr[1] * arr[3];
-            }            
+            }
+            printf("result = %d\n",result);
+            fp1 = fopen("solution.txt","w");
+            if( fp1<0 ){ 
+                perror("cant open: com_file"); 
+                exit(0);
+            }
+            fprintf(fp1,"%d\n%d\n",getpid() ,result);            
             /////////////////////////////////////////////////////////////////////////////////////////////
             kill(arr[0],SIGUSR1);
+            printf("yalla imasach\n");
         }
     } 
 }
@@ -83,15 +99,7 @@ void handler1(int sig){
 
  int main(int argc, char* argv[]){
     signal(SIGUSR1, handler1);
-    printf("result = %d",result);
-    FILE* fd2;
-    fd2= fopen("to_client.txt","w");
-        if( fd2<0 )
-        { 
-            perror("cant open: com_file"); 
-            exit(0);
-        }
-    fprintf(fd2,"%s\n%d",argv[1],result);
-    sleep(5);
+    printf("Try to sleep\n");
+    sleep(9999);
     return 0;
 }

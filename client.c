@@ -32,8 +32,8 @@ void handler1(int sig){
         ptr = strtok(NULL, delim);
         k++;
       }
-   printf("The result is: %s\n",arr[2]);
-   kill(arr[1],SIGUSR1);
+   printf("The result is: %d\n",arr[1]);
+   kill(arr[0],SIGUSR1);
 }
   // kill()
 
@@ -50,7 +50,8 @@ int main(int argc, char* argv[]){
    //////////////////////////////////////////////////////////////////////////////////
    //Open output file and prints the arguments (client pid, var1, signal number, var2)
    fp = fopen ("output.txt","w");
-   fprintf(fp,"%s\n%s\n%s\n%s\n", argv[1], argv[2], argv[3], argv[4]);
+   fprintf(fp,"%d\n%s\n%s\n%s\n",getpid(), argv[2], argv[3], argv[4]);
+   fclose(fp);
    //////////////////////////////////////////////////////////////////////////////////
    exit (0);
 
