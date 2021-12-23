@@ -16,7 +16,7 @@ void handler1(int sig){
 
  int main(int argc, char* argv[]){
     signal(SIGUSR1, handler1);
-        FILE* fd;
+    FILE* fd;
     FILE* fd2;
     char buffer[256];
     char ch;
