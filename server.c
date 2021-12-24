@@ -9,10 +9,10 @@
 void handler1(int sig){
     FILE* fd;
     FILE* fd2;
+    int proc_pid;
     char buffer[256];
     char ch;
     int i = 0;
-   // int pid; 
     int tmp;
     int init_size;
     char delim[] =  "\n";
@@ -23,8 +23,9 @@ void handler1(int sig){
     FILE* fp1;
     int result;
 
-    printf("Hello from the server handler\n");
+    printf("Hello from the server handler: \n");
     signal(SIGUSR1, handler1);
+    printf("pid=%d receives a signal %d\n",getpid(),sig);
     /////////////////////////////////////////////////////////////////////////////////////////////
     pid = fork();
     if (pid < 0){
@@ -53,6 +54,7 @@ void handler1(int sig){
                 ptr = strtok(NULL, delim);
                 k++;
             }
+            proc_pid = arr[1];
             /////////////////////////////////////////////////////////////////////////////////////////////
             //arr[0] = client pid 
             //arr[1] = num1
@@ -88,10 +90,12 @@ void handler1(int sig){
                 perror("cant open: com_file"); 
                 exit(0);
             }
-            fprintf(fp1,"%d\n%d\n",getpid() ,result);            
+            fprintf(fp1,"%d\n",result);            
             /////////////////////////////////////////////////////////////////////////////////////////////
-            kill(arr[0],SIGUSR1);
-            printf("yalla imasach\n");
+            fclose(fp1);
+            kill(proc_pid,SIGUSR1);
+            printf("Printed the result and kill to client\n");
+            exit(0);
         }
     } 
 }
@@ -99,7 +103,8 @@ void handler1(int sig){
 
  int main(int argc, char* argv[]){
     signal(SIGUSR1, handler1);
-    printf("Try to sleep\n");
+    printf("Getting to sleep: \n");
+    printf("Server pid: %d\n", getpid());
     sleep(9999);
     return 0;
 }
