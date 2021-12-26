@@ -26,18 +26,19 @@ void handler1(int sig){
        buffer[i] = ch;
        i++;
    }
-//    init_size = strlen(buffer);
-//     ptr = strtok(buffer, delim);
-//       while(ptr != NULL)
-//       {
-//         printf("%s", ptr);
-//         arr[k] = atoi(ptr);
-//         ptr = strtok(NULL, delim);
-//         k++;
-//       }
+   printf("%s\n",buffer);
+   printf("%ld\n",strlen(buffer));
+   printf("%d\n", atoi(buffer));
+//    if(strcmp(buffer, "mother"));
+//    {
+//        printf("Cannot divide by zero\n");
+//        fclose(fpServer);
+//        exit(-1);
+//    }
+   printf("The result is :) = %s\n", buffer);
+
     fclose(fpServer);
-   //printf("The result is: %d\n",arr[1]);
-   //result2 = atoi(ptr);
+
 }
 
 int main(int argc, char* argv[]){
@@ -58,12 +59,12 @@ int main(int argc, char* argv[]){
    fprintf(fp,"%d\n%s\n%s\n%s\n",getpid(), argv[2], argv[3], argv[4]);
    fclose(fp);
    kill(proc_pid,SIGUSR1);
-   fpServer = fopen("solution.txt", "r"); // read the result from "to_client" file  
+   fpServer = fopen("solution.txt", "r"); // read the result from "solution" file  
    while((ch = fgetc(fpServer)) != EOF){
        buffer[i] = ch;
        i++;
    }
-   printf("Result = %s\n", buffer);
+//    printf("Result = %s\n", buffer);
    sleep(1);
    //////////////////////////////////////////////////////////////////////////////////
    exit (0);

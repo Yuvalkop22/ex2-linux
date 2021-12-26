@@ -54,7 +54,8 @@ void handler1(int sig){
                 ptr = strtok(NULL, delim);
                 k++;
             }
-            proc_pid = arr[1];
+            proc_pid = arr[0];
+            printf("client pid = %d\n", proc_pid);
             /////////////////////////////////////////////////////////////////////////////////////////////
             //arr[0] = client pid 
             //arr[1] = num1
@@ -69,13 +70,14 @@ void handler1(int sig){
 
             if(arr[2] == 3){
                 if(arr[3] == 0){
-                    fd2= fopen("to_client.txt","w");
+                    fd2= fopen("solution.txt","w");
                     if(fd2<0){
                         perror("cant open: com_file");
                         exit(0);
                     }
-                    fprintf(fd2,"%s", "Cannot divide by zero");
-                    exit(-1);
+                    fprintf(fd2,"%s", "Cannot-divide-by-zero");
+                    kill(proc_pid,SIGUSR1);
+                    exit(0);
                 }
                 else{
                     result = arr[1] / arr[3];
